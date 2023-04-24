@@ -1,0 +1,186 @@
+#c:\xampp\mysql\bin\mysql -uroot<C:\Users\Marko\Downloads\edu27\skripta12.sql
+drop database if exists nogometnastatistika;
+create database nogometnastatistika  default charset utf8;
+use nogometnastatistika;
+
+create table Klub(
+    sifra int not null primary key auto_increment,
+    naziv varchar(20) not null
+
+);
+
+create table Utakmica(
+    sifra int not null primary key auto_increment,
+    domaci_sifra int not null,
+    gosti_sifra int not null,
+    vrijeme_pocetka datetime not null,
+    maksimalan_broj_navijaca int,
+    stadion varchar(30)
+    
+   
+);
+
+create table Igrac(
+    sifra int not null primary key auto_increment,
+    ime varchar(10) not null,
+    prezime varchar (15) not null,
+    datum_rodjenja datetime,
+    oib varchar(11),
+    trenutna_vrijednost decimal(18,2),
+    pozicija varchar(20),
+    broj int,
+    klub int not null
+    
+);
+
+create table Dogadjaj(
+    sifra int not null primary key auto_increment,
+    minuta int not null,
+    igrac int not null,
+    utakmica int not null,
+    vrsta int not null
+);
+
+create table Vrsta(
+    sifra int not null primary key auto_increment,
+    naziv varchar(30) not null,
+    gol boolean
+   
+
+);
+
+alter table utakmica add foreign key (domaci_sifra) references klub(sifra); #1
+alter table utakmica add foreign key (gosti_sifra) references klub(sifra);
+alter table igrac add foreign key (klub) references klub(sifra);
+alter table dogadjaj add foreign key (igrac) references igrac(sifra);
+alter table dogadjaj add foreign key (utakmica) references utakmica(sifra);
+alter table dogadjaj add foreign key (vrsta) references vrsta(sifra);
+
+
+insert into klub (sifra,naziv)
+values (null,'Rudes'),(null,'Solin'),(null,'Cibalia'),(null,'Vukovar_91'),(null,'Dugopolje'),(null,'Orijent');
+
+
+
+insert into utakmica (sifra,domaci_sifra,gosti_sifra,vrijeme_pocetka,maksimalan_broj_navijaca,stadion)
+values (null,1,2,'2022-10-02 15:30:00',2000,'SC Rudes'),
+(null,3,5,'2022-10-15 15:00:00',5000,'HNK Cibalia'),
+(null,6,4,'2022-10-22 15:00:00',3500,'Krimeja'),
+(null,5,6,'2022-09-17 16:30:00',4000,'Hrvatski Vitezovi'),
+(null,4,3,'2022-11-19 13:30:00',1800,'Gradski Stadion'),
+(null,2,6,'2022-10-29 15:00:00',1500,'Pokraj Jadra'),
+(null,4,1,'2022-10-08 15:00:00',1800,'Gradski Stadion'),
+(null,5,2,'2022-10-22 13:00:00',4000,'Hrvatski Vitezovi'),
+(null,3,1,'2022-11-12 13:00:00',5000,'HNK Cibalia');
+
+
+
+insert into igrac(sifra,ime,prezime,datum_rodjenja,oib,trenutna_vrijednost,pozicija,broj,klub)
+values (null,'Karlo','Kralj','2001-06-16','29385715396',49000,'Golman',1,1),
+(null,'Antonio','Boršić','1995-09-19','29382997391',310000,'Obrana',2,1),
+(null,'Luka','Pavković','1993-02-18','34565715397',24000,'Obrana',4,1),
+(null,'Miguel','Campos','1996-08-19','29888715396',84000,'Obrana',3,1),
+(null,'Festim','Shatri','2003-11-28','29385710023',52000,'Obrana',5,1),
+(null,'Tomislav','Srbljinović','1999-12-27','69385715377',270000,'Sredina',6,1),
+(null,'Bruno','Brajković','2001-04-16','44385715292',435000,'Sredina',7,1),
+(null,'Aleksa','Latković','2000-10-30','29385715666',465000,'Veza',8,1),
+(null,'Tomislav','Gudelj','1998-05-01','90905715396',370000,'Veza',9,1),
+(null,'Roko','Brajković','2003-07-13','11232715396',47000,'Veza',10,1),
+(null,'Krešimir','Kovačević','1994-08-07','29385009945',260000,'Napad',11,1),
+(null,'Ante','Topić','1990-01-07','89385714444',73000,'Golman',1,2),
+(null,'Luka','Džaja','2001-02-01','22364715886',48000,'Obrana',3,2),
+(null,'Mateo','Tomić','1997-12-20','68463066721',94000,'Obrana',2,2),
+(null,'Marko','Novak','2003-06-13','66943050222',145000,'Obrana',5,2),
+(null,'Rokas','Pukstas','2004-08-25','22958398753',580000,'Sredina',4,2),
+(null,'Dino','Klarić','2002-04-06','99284571229',68000,'Sredina',6,2),
+(null,'Duje','Ninčević','1997-05-03','51388394203',145000,'Sredina',7,2),
+(null,'Ivan','Dominić','2003-01-07','98184533294',20000,'Sredina',22,2),
+(null,'Ivan','Markota','1998-12-06','65969432001',155000,'Veza',10,2),
+(null,'Stephen','Chinedu','2000-01-06','19283754542',160000,'Veza',13,2),
+(null,'Sylvanus','Nimely','1998-09-04','13432948854',240000,'Napad',18,2),
+(null,'Filip','Kovačević','2002-03-22','54583499231',115000,'Golman',1,3),
+(null,'Bruno','Unušić','2002-02-09','22943958441',155000,'Obrana',2,3),
+(null,'Josip','Gačić','1998-03-02','99848329432',53000,'Obrana',4,3),
+(null,'Marijan','Oršolić','1998-04-07','48392859328',210000,'Obrana',3,3),
+(null,'Dario','Rugašević','1991-01-29','11929382213',145000,'Obrana',33,3),
+(null,'Simun','Mikolčić','2004-01-24','38594304954',105000,'Sredina',7,3),
+(null,'Karlo','Isasegi','2000-08-24','78434321965',185000,'Veza',9,3),
+(null,'Gerald','Diyoke','1996-03-11','84739956871',190000,'Veza',11,3),
+(null,'Edis','Smajić','1999-09-10','23459285412',240000,'Veza',10,3),
+(null,'Andrija','Bubnjar','1997-01-29','55569483431',140000,'Veza',8,3),
+(null,'Ivan','Mihaljević','1999-06-29','65438596523',340000,'Napad',31,3),
+(null,'Franko','Kolić','2003-02-07','39483234565',180000,'Golman',99,4),
+(null,'Kristijan','Pavičić','1999-03-06','39215409652',10000,'Obrana',3,4),
+(null,'Tino','Jukić','2001-10-10','55496584324',15000,'Obrana',2,4),
+(null,'Patrik','Periša','1996-03-25','84730294852',145000,'Obrana',5,4),
+(null,'Dominik','Mihaljević','1994-08-27','82837410499',205000,'Obrana',4,4),
+(null,'Zinedin','Mustedanagić','1998-08-01','23987654962',210000,'Sredina',7,4),
+(null,'Tomislav','Baltić','1992-10-13','79485420392',145000,'Sredina',8,4),
+(null,'Jakov','Biljan','1995-08-02','11030214931',52000,'Sredina',14,4),
+(null,'Robin','Ruiz','1998-11-26','86954328545',15000,'Veza',43,4),
+(null,'Vanja','Pelko','2002-03-25','52232320976',10000,'Veza',10,4),
+(null,'Josip','Barišić','1986-11-14','34890984321',210000,'Napad',9,4),
+(null,'Toni','Silić','2004-05-07','93847562834',105000,'Golman',1,5),
+(null,'Gregor','Gulisija','2002-01-04','87654329123',52000,'Obrana',2,5),
+(null,'Igor','Cerina','1988-09-30','54546787569',140000,'Obrana',3,5),
+(null,'Roko','Kurtović','1999-01-24','12345643243',155000,'Obrana',4,5),
+(null,'Filip','Mekić','2002-09-13','78654987612',165000,'Obrana',5,5),
+(null,'Dominik','Balić','1996-05-04','53535478612',105000,'Sredina',6,5),
+(null,'Mihael','Mlinarić','2000-01-16','87629365418',205000,'Sredina',10,5),
+(null,'Marin','Ljubičić','1988-06-15','55464325789',135000,'Sredina',8,5),
+(null,'Filip','Ambroz','2003-12-01','36547812348',52000,'Veza',7,5),
+(null,'Ivan','Rodić','1985-11-11','98372637451',52000,'Veza',12,5),
+(null,'Carlos','Torres','2002-10-20','65648976123',53000,'Napad',11,5),
+(null,'Mislav','Zadro','2003-04-22','48394857234',270000,'Golman',1,6),
+(null,'Mario','Tadejević','1989-08-28','20594832345',52000,'Obrana',64,6),
+(null,'Marko','Putnik','2001-02-27','98734632834',92000,'Obrana',23,6),
+(null,'Ennio','Travaglia','1997-04-04','98765232345',24000,'Obrana',3,6),
+(null,'Filip','Braut','2002-06-05','10293738384',210000,'Sredina',4,6),
+(null,'Marijan','Jukičić','1999-06-22','87643090432',52000,'Sredina',7,6),
+(null,'Nino','Mohorovičić','2000-04-25','98794638111',215000,'Sredina',8,6),
+(null,'Filip','Dujmović','2001-08-04','59822223146',540000,'Sredina',15,6),
+(null,'Mateo','Monjac','1996-06-20','54121347867',275000,'Veza',10,6),
+(null,'Dzemal','Ibishi','2001-01-18','88765434356',330000,'Veza',44,6),
+(null,'Emanuel','Črnko','1999-04-07','88876437463',90000,'Napad',11,6);
+
+
+
+insert into vrsta(sifra,naziv,gol)
+values (1,'Izmjena',False),
+(2,'Asistencija',False),
+(3,'Žuti Karton',False),
+(4,'Crveni Karton',False),
+(5,'Jedanaesterac',False),
+(6,'Ozljeda',False),
+(7,'Gol',True);
+
+
+
+insert into dogadjaj(sifra,minuta,igrac,utakmica,vrsta)
+values (null,10,6,1,3),
+(null,12,20,1,3),(null,30,19,1,1),(null,65,9,1,1),(null,74,18,1,7),
+(null,76,18,1,3),(null,82,22,1,1),(null,74,20,1,2),(null,45,49,2,3),
+(null,46,31,2,1),(null,55,53,2,1),(null,65,27,2,3),(null,77,48,2,7),
+(null,77,49,2,2),(null,81,33,2,7),(null,81,27,2,2),(null,90,46,2,6),
+(null,02,43,3,7),(null,02,41,3,2),(null,06,42,3,7),(null,06,39,3,2),
+(null,07,61,3,3),(null,29,41,3,7),(null,29,38,3,2),(null,41,39,3,7),
+(null,41,46,3,2),(null,60,65,3,3),(null,63,65,3,1),(null,73,41,3,1),
+(null,89,66,3,5),(null,89,66,3,7),(null,18,49,4,3),(null,37,53,4,3),
+(null,43,60,4,7),(null,43,63,4,2),(null,56,54,4,1),(null,61,55,4,1),
+(null,69,63,4,7),(null,86,48,4,7),(null,86,52,4,2),(null,88,63,4,1),
+(null,10,26,5,3),(null,27,39,5,7),(null,27,42,5,2),(null,46,43,5,1),
+(null,60,31,5,1),(null,63,38,5,1),(null,65,41,5,4),(null,70,32,5,7),
+(null,70,30,5,2),(null,71,33,5,5),(null,71,33,5,7),(null,79,40,5,3),
+(null,87,33,5,1),(null,90,40,5,7),(null,90,35,5,2),(null,18,19,6,7),
+(null,42,17,6,3),(null,56,21,6,7),(null,56,22,6,2),(null,76,21,6,1),
+(null,86,13,6,1),(null,32,63,6,3),(null,35,57,6,3),(null,57,58,6,1),
+(null,70,59,6,1),(null,90,66,6,7),(null,90,64,6,2),(null,15,5,7,3),
+(null,46,11,7,1),(null,78,9,7,1),(null,87,10,7,7),(null,87,4,7,2),
+(null,88,8,7,5),(null,88,8,7,7),(null,04,43,7,7),(null,39,40,7,7),
+(null,39,39,7,2),(null,49,39,7,3),(null,60,37,7,6),(null,60,37,7,1),
+(null,89,42,7,1),(null,02,55,8,3),(null,10,50,8,3),(null,37,54,8,4),
+(null,61,51,8,7),(null,61,55,8,2),(null,73,51,8,1),(null,81,55,8,1),
+(null,57,18,8,1),(null,63,13,8,1),(null,84,17,8,1),(null,90,14,8,3),
+(null,31,10,9,7),(null,31,11,9,2),(null,51,10,9,7),(null,76,10,9,7),
+(null,76,9,9,2),(null,80,7,9,1),(null,85,3,9,1),(null,44,33,9,3),
+(null,57,31,9,1),(null,75,25,9,4),(null,77,30,9,1),(null,83,29,9,1);
